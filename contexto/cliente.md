@@ -12,7 +12,7 @@
 
 **Dor dominante: quer se preparar para vender no futuro.** Não é uma dor operacional imediata (perder dinheiro sozinho) — é estratégica: ele sabe (ou desconfia) que vai querer/precisar sair um dia, e sabe que precisa profissionalizar a empresa antes disso.
 
-Isso reforça a decisão já registrada em [02-negocio.md](02-negocio.md): os serviços recorrentes são a porta de entrada porque resolvem uma dor de preparação, não porque o dono está pedindo M&A no primeiro contato.
+Isso reforça a decisão já registrada em [negocio.md](negocio.md): os serviços recorrentes são a porta de entrada porque resolvem uma dor de preparação, não porque o dono está pedindo M&A no primeiro contato.
 
 ## Do que reclama
 
@@ -39,7 +39,7 @@ Isso muda a estratégia: o discurso não precisa ser "somos melhores que X", pre
 
 ## O que faria ele ir embora (churn)
 
-**Falta de resultado/entrega percebida.** Se ele sente que está pagando e não vê retorno claro (economia fiscal, organização, preparação real para uma eventual venda), cancela ou não renova. Isso reforça o risco já registrado em [02-negocio.md](02-negocio.md): **entregar poucos serviços com qualidade visível é mais importante do que abranger muitos serviços**. Entrega percebida é o que sustenta a relação, não a amplitude da oferta.
+**Falta de resultado/entrega percebida.** Se ele sente que está pagando e não vê retorno claro (economia fiscal, organização, preparação real para uma eventual venda), cancela ou não renova. Isso reforça o risco já registrado em [negocio.md](negocio.md): **entregar poucos serviços com qualidade visível é mais importante do que abranger muitos serviços**. Entrega percebida é o que sustenta a relação, não a amplitude da oferta.
 
 ## Pontos em aberto (hipóteses ainda não validadas)
 
@@ -52,4 +52,4 @@ Isso muda a estratégia: o discurso não precisa ser "somos melhores que X", pre
 - Ao pensar em discurso comercial, produto ou priorização, lembrar: o cliente **não está competindo com outra empresa na cabeça dele** — está competindo com "não fazer nada". A urgência vem de dentro, não de comparação externa.
 - O medo do dono não é só técnico (M&A) — é emocional e existencial (identidade ligada à empresa + medo do pós-venda). Qualquer material/discurso deve considerar as três camadas de medo, não só a falta de conhecimento técnico.
 - Gestão patrimonial pós-venda é parte real da proposta de valor — não tratar como "extra" ou apêndice ao pensar em produto/jornada.
-- "Falta de entrega percebida" como principal risco de churn reforça (não contradiz) a decisão de [02-negocio.md](02-negocio.md) de focar em poucos serviços bem entregues.
+- "Falta de entrega percebida" como principal risco de churn reforça (não contradiz) a decisão de [negocio.md](negocio.md) de focar em poucos serviços bem entregues.
