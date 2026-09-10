@@ -1,5 +1,6 @@
 # Arquivos pessoais/familiares que não devem ir para este repositório
 Hire_Capital_Dossie.pdf
 
-# Configuração local do Claude Code
-.claude/
+# Configuração local do Claude Code (versiona as skills do projeto, ignora o resto)
+.claude/*
+!.claude/skills/
