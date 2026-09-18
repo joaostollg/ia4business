@@ -41,7 +41,7 @@ Percorrer todos os `.md` e materiais de trabalho do repositório (não os arquiv
 
 6. **Arquivo fora do padrão de nome.**
    - Padrão: minúsculas, palavras ligadas por hífen (kebab-case), **sem espaço**, sem acento, versão como `-v2` no fim.
-   - Exemplos atuais fora do padrão: `tech 1 .pdf` (espaço, número solto), `prompt V1.md` / `prompt V2.md` / `prompt V3.md` (espaço + maiúscula). Sugerir: `tech-radar-provedores-spec.pdf`, `prompt-ma-telecom-v3.md`.
+   - Exemplo de correção já aplicada: `tech 1 .pdf` → `tech-radar-provedores-spec.pdf`, `prompt V1/V2/V3.md` → `prompt-ma-telecom-v1/v2/v3.md`. Usar o mesmo padrão para qualquer arquivo novo que chegar fora dele.
 
 7. **Documentos-âncora desatualizados.**
    - `CLAUDE.md`, `SKILLS.md` e `contexto/` refletem a realidade atual do repositório? Arquivo citado que não existe mais, seção que contradiz o estado de hoje → sinalizar.

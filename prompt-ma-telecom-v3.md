@@ -1,6 +1,6 @@
 # Prompt V3
 
-> Versão refinada do [prompt V2](prompt%20V2.md), depois de uma crítica de "revisor exigente" (o que estava ambíguo, o que faltava, o que sobrava). Ainda não foi executada — é só o texto do prompt reescrito, para uso futuro em [problema-radar-provedores-analise.md](problema-radar-provedores-analise.md).
+> Versão refinada do [prompt-ma-telecom-v2.md](prompt-ma-telecom-v2.md), depois de uma crítica de "revisor exigente" (o que estava ambíguo, o que faltava, o que sobrava). Ainda não foi executada — é só o texto do prompt reescrito, para uso futuro em [problema-radar-provedores-analise.md](problema-radar-provedores-analise.md).
 
 **Data:** 24/08/2026
 

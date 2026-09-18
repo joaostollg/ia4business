@@ -1,6 +1,6 @@
 # Radar de Provedores — Diagnóstico de Investidor + Problema Reescrito
 
-> Análise feita sobre o documento `tech 1.pdf` ("Radar de Provedores — Ferramenta de IA para prospecção e qualificação de ISPs regionais", Grupo Sun Investimentos). Foco: entender e fortalecer 100% a seção de **Problema**, com a lente de quem vai decidir se aporta capital/tempo nisso.
+> Análise feita sobre o documento `tech-radar-provedores-spec.pdf` ("Radar de Provedores — Ferramenta de IA para prospecção e qualificação de ISPs regionais", Grupo Sun Investimentos). Foco: entender e fortalecer 100% a seção de **Problema**, com a lente de quem vai decidir se aporta capital/tempo nisso.
 
 ---
 
@@ -97,7 +97,7 @@ Aplicando essa proporção ao universo nacional:
 
 **Por que isso é só um chute, não um número confiável:**
 - Assume que provedores se distribuem uniformemente por município — mas SP é mais desenvolvido/conectado que a média do país, o que pode significar *mais* concorrência de grandes teles por município (menos espaço pra regional) ou *mais* provedores locais historicamente consolidados (mais fragmentação). As duas hipóteses puxam em direções opostas e não temos como saber qual pesa mais sem o dado real.
-- Não filtra por porte. O número de ~2.050 inclui desde um provedor de 200 acessos até um de 200.000 — a faixa "doce" de 3.000–30.000 acessos (também um chute, ver [ICP no documento original](tech%201%20.pdf)) é uma fatia menor e desconhecida desse total.
+- Não filtra por porte. O número de ~2.050 inclui desde um provedor de 200 acessos até um de 200.000 — a faixa "doce" de 3.000–30.000 acessos (também um chute, ver [ICP no documento original](tech-radar-provedores-spec.pdf)) é uma fatia menor e desconhecida desse total.
 
 ### 4.3 O que tentamos e não deu certo (documentar para não repetir)
 
@@ -231,7 +231,7 @@ Isso sugere um **viés de tamanho na cobertura de imprensa**: os dois múltiplos
 
 ## 9. Comparáveis Nacionais de M&A em Telecom — últimos 10 anos (24/08/2026)
 
-> Gerada a partir do [prompt V2.md](prompt%20V2.md) — escopo mais amplo que a Seção 7 (Brasil inteiro, não só SP; 10 anos, não só 3; inclui infraestrutura de fibra/atacado, não só ISPs de varejo). Serve como **benchmark de mercado mais amplo**, não substitui a Seção 7 (que é o recorte direto para a tese do Radar). Metodologia igual à da Seção 7: levantamento manual em imprensa especializada, sem base de dados única — necessariamente incompleto.
+> Gerada a partir do [prompt-ma-telecom-v2.md](prompt-ma-telecom-v2.md) — escopo mais amplo que a Seção 7 (Brasil inteiro, não só SP; 10 anos, não só 3; inclui infraestrutura de fibra/atacado, não só ISPs de varejo). Serve como **benchmark de mercado mais amplo**, não substitui a Seção 7 (que é o recorte direto para a tese do Radar). Metodologia igual à da Seção 7: levantamento manual em imprensa especializada, sem base de dados única — necessariamente incompleto.
 
 ### 9.1 Tabela de transações (2016–2026)
 

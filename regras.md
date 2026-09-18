@@ -36,7 +36,7 @@ cada lado da condição:
 | Mês testado | Receita paga (só PAID) | < R$ 3.000? | Resultado esperado |
 |---|---|---|---|
 | Janeiro/2026 | R$ 1.430,00 (pedidos 1001 e 1002; 1003 cancelado e 1004 pendente ficam de fora) | Sim | **Dispara** → alarme no Notion |
-| Fevereiro/2026 | R$ 3.149,90 (pedidos 1005, 1006 e 1007, todos pagos) | Não | **Fica calada** → registra em `historico.md` |
+| Fevereiro/2026 | R$ 3.149,90 (pedidos 1005, 1006 e 1007, todos pagos) | Não | **Fica calada** → registra em `automacoes.md` |
 
 ### Dado ao vivo — setembro/2026 (mês atual em 14/09/2026)
 

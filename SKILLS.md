@@ -11,3 +11,14 @@ Skills instaladas no Claude Code para uso neste e nos demais projetos.
 | `/recursive-research` | Pesquisa profunda em ciclos, com hierarquia de fontes confiáveis e checkpoints em disco. Ideal para panoramas de mercado e due diligence de M&A | Sempre abrir com `/recursive-research` seguido do tema |
 
 **Como usar:** na maioria dos casos basta escrever o pedido em linguagem natural que o Claude escolhe a skill certa. A barra (`/comando`) serve para garantir o uso — e para a `/recursive-research`, usar sempre a barra.
+
+## Skills deste projeto
+
+Vivem em `.claude/skills/` deste repositório (só funcionam aqui, diferente das globais acima).
+
+| Comando | Para que serve | Quando usar |
+|---|---|---|
+| `/revisa-repo` | Revisão crítica do repositório antes de qualquer entrega: afirmação vaga, número sem fonte, hipótese tratada como fato, inconsistência com `contexto/`, arquivo fora do padrão de nome | Antes de mandar algo pra fora ou de dar `git push`; ou sob pedido explícito |
+| `/gera-briefing` | Monta o briefing antes de uma conversa importante (dono de ISP, sócio do Grupo Sun, fornecedor, professor), lendo `contexto/` | "vou conversar com...", "me prepara pra call" |
+| `/fecha-conversa` | Notas cruas de reunião → ata (decisões, ações com dono e prazo, pontos em aberto), propõe atualização do `contexto/` e prepara o commit | Depois de uma reunião, colando as anotações |
+| `/internal-comms` | Escreve comunicação interna nos formatos certos (status report, update de liderança, newsletter, FAQ) | Pedir um desses tipos de comunicação |

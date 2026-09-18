@@ -53,9 +53,21 @@ Nunca fazer:
 
 - `problema-radar-provedores-analise.md` — diagnóstico do Radar com lente de
   investidor; reforça/critica a seção de "Problema" do spec.
-- `tech 1.pdf` — spec técnico original do Radar de Provedores.
-- `prompt V1.md` / `V2.md` / `V3.md` — iterações do prompt de análise de M&A
-  em telecom (V3 é a versão vigente, ainda não executada).
+- `tech-radar-provedores-spec.pdf` — spec técnico original do Radar de Provedores.
+- `prompt-ma-telecom-v1.md` / `v2.md` / `v3.md` — iterações do prompt de
+  análise de M&A em telecom (v3 é a versão vigente, ainda não executada).
+- `SKILLS.md` — índice das skills instaladas (globais e deste projeto).
+- `fake-erp.md` — contexto de acesso à API do FakeERP (ERP de treino das
+  Aulas 10–12): autenticação, endpoints, erros comuns.
+- `regras.md` — regras de automação do negócio de treino (gatilho, condição,
+  ação, quem recebe, se não disparar).
+- `automacoes.md` — log de execução das regras + como o `painel.html` é
+  atualizado.
+- `dados/fonte.md` — fonte canônica do FakeERP: os 3 números do negócio de
+  treino, com a regra de cálculo de cada um.
+- `dados/amostra.csv` — dado bruto (pedidos do FakeERP) que alimenta o painel.
+- `painel.html` — dashboard de arquivo único, gerado a partir de
+  `dados/fonte.md` + `dados/amostra.csv`, abre offline.
 - `Hire_Capital_Dossie.pdf` — pessoal, fora do git (`.gitignore`).
 
 ## Regras herdadas do projeto Radar de Provedores
