@@ -1,0 +1,313 @@
+<title>Termômetro da Faria Lima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2f4f6; --surface:#ffffff; --surface-2:#e8ebef; --line:#dde1e6;
+    --ink:#14171c; --ink-muted:#5b6270; --ink-faint:#8991a0;
+    --accent:#1d3f8f; --accent-soft:#e1e8fb;
+    --pos:#1f9d6b; --pos-soft:#e3f5ec;
+    --neg:#d1453b; --neg-soft:#fbe7e5;
+    --radius:14px;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111317; --surface:#181b20; --surface-2:#20242b; --line:#2a2f37;
+      --ink:#eef0f3; --ink-muted:#9aa2b0; --ink-faint:#6c7484;
+      --accent:#7c9aeb; --accent-soft:#1c2740;
+      --pos:#34c48a; --pos-soft:#173327;
+      --neg:#e5695f; --neg-soft:#3a1e1c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111317; --surface:#181b20; --surface-2:#20242b; --line:#2a2f37;
+    --ink:#eef0f3; --ink-muted:#9aa2b0; --ink-faint:#6c7484;
+    --accent:#7c9aeb; --accent-soft:#1c2740;
+    --pos:#34c48a; --pos-soft:#173327;
+    --neg:#e5695f; --neg-soft:#3a1e1c;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Public Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    padding-inline:20px; padding-block:36px 64px;
+  }
+  .page{max-width:840px; margin:0 auto; display:flex; flex-direction:column; gap:36px}
+
+  .disp{font-family:'Barlow Condensed',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:.01em}
+  .mono{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums}
+
+  header{display:flex; flex-direction:column; gap:6px}
+  .eyebrow{font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent)}
+  h1{margin:0; font-size:clamp(32px,6.5vw,50px); line-height:.98; text-wrap:balance}
+  .lede{color:var(--ink-muted); font-size:15.5px; max-width:60ch; line-height:1.5}
+
+  .posts-row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  @media (max-width:560px){ .posts-row{grid-template-columns:1fr} }
+  .post-card{
+    display:flex; gap:12px; align-items:center; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px;
+  }
+  .post-thumb{
+    width:44px; height:44px; border-radius:9px; flex:none; overflow:hidden;
+    background:linear-gradient(150deg,var(--accent),#0d1f4a); position:relative;
+  }
+  .post-thumb::after{
+    content:"btg"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed'; font-weight:700; font-size:14px; color:#fff; opacity:.9;
+  }
+  .post-meta{display:flex; flex-direction:column; gap:1px; min-width:0}
+  .post-handle{font-weight:700; font-size:13px}
+  .post-caption{color:var(--ink-muted); font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .post-date{color:var(--ink-faint); font-size:11.5px; font-family:'IBM Plex Mono'}
+
+  .hero{
+    background:var(--surface); border:1px solid var(--line); border-radius:20px;
+    padding:32px clamp(20px,4vw,40px); display:flex; flex-direction:column; gap:20px;
+  }
+  .hero-top{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap}
+  .hero-label{font-family:'Barlow Condensed'; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-muted)}
+  .hero-verdict{font-family:'Barlow Condensed'; font-weight:700; font-size:20px; color:var(--neg); text-transform:uppercase}
+  .hero-number-row{display:flex; align-items:flex-end; gap:14px}
+  .hero-number{font-family:'IBM Plex Mono'; font-weight:600; font-size:clamp(64px,14vw,96px); line-height:.9; letter-spacing:-.02em; color:var(--neg)}
+  .hero-number-suffix{font-family:'IBM Plex Mono'; font-size:22px; color:var(--ink-faint); padding-bottom:10px}
+
+  .gauge{position:relative; height:14px; border-radius:99px; background:
+    linear-gradient(to right, var(--neg) 0%, var(--surface-2) 50%, var(--pos) 100%);
+    border:1px solid var(--line);
+  }
+  .gauge-marker{position:absolute; top:-6px; width:3px; height:26px; background:var(--ink); border-radius:2px; transform:translateX(-50%)}
+  .gauge-marker::after{content: attr(data-label); position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-family:'IBM Plex Mono'; font-size:12px; font-weight:600; color:var(--ink); white-space:nowrap}
+  .gauge-ticks{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-faint); font-family:'IBM Plex Mono'; margin-top:4px}
+
+  .section{display:flex; flex-direction:column; gap:14px}
+  .section-head{display:flex; flex-direction:column; gap:4px}
+  h2{font-family:'Barlow Condensed'; font-weight:800; font-size:26px; text-transform:uppercase; margin:0; letter-spacing:.01em}
+  .section-sub{color:var(--ink-muted); font-size:14px; line-height:1.5; max-width:62ch}
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media (max-width:560px){ .compare{grid-template-columns:1fr} }
+  .compare-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; display:flex; flex-direction:column; gap:12px}
+  .compare-title{font-size:13px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em}
+  .compare-num{font-family:'IBM Plex Mono'; font-size:34px; font-weight:600}
+  .divbar{display:flex; height:22px; border-radius:6px; overflow:hidden; border:1px solid var(--line)}
+  .divbar .neg{background:var(--neg)}
+  .divbar .pos{background:var(--pos)}
+  .divbar-legend{display:flex; justify-content:space-between; font-size:12px; font-family:'IBM Plex Mono'; color:var(--ink-muted)}
+  .divbar-legend .neg-lbl{color:var(--neg); font-weight:600}
+  .divbar-legend .pos-lbl{color:var(--pos); font-weight:600}
+
+  .insight-box{background:var(--neg-soft); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; font-size:14.5px; line-height:1.55; color:var(--ink)}
+  .insight-box b{color:var(--neg)}
+
+  .contro-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 22px; display:flex; gap:20px; align-items:center; flex-wrap:wrap;
+  }
+  .contro-stat{font-family:'IBM Plex Mono'; font-size:44px; font-weight:600; color:var(--neg); line-height:1}
+  .contro-stat-label{font-size:12px; color:var(--ink-faint); font-family:'IBM Plex Mono'}
+  .contro-text{flex:1; min-width:220px; font-size:14.5px; line-height:1.55; color:var(--ink-muted)}
+  .contro-text b{color:var(--ink)}
+
+  .theme-bar{display:flex; height:34px; border-radius:8px; overflow:hidden; border:1px solid var(--line)}
+  .theme-bar .seg{display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-size:12px; font-weight:600; color:#fff; padding:0 4px; text-align:center; white-space:nowrap; overflow:hidden}
+  .seg.c1{background:var(--neg)}
+  .seg.c2{background:var(--ink-muted)}
+  .seg.c3{background:var(--surface-2); color:var(--ink-faint) !important}
+  .theme-legend{display:flex; gap:18px; font-size:12.5px; color:var(--ink-muted); flex-wrap:wrap}
+  .theme-legend span{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:9px; height:9px; border-radius:3px; flex:none}
+  .dot.c1{background:var(--neg)}
+  .dot.c2{background:var(--ink-muted)}
+  .dot.c3{background:var(--surface-2); border:1px solid var(--line)}
+
+  .quotes{display:flex; flex-direction:column; gap:10px}
+  .quote-card{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--line); border-radius:10px; padding:14px 16px; display:flex; gap:14px; align-items:flex-start}
+  .quote-card.pos{border-left-color:var(--pos)}
+  .quote-card.neg{border-left-color:var(--neg)}
+  .score-badge{flex:none; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-weight:600; font-size:14px}
+  .score-badge.pos{background:var(--pos-soft); color:var(--pos)}
+  .score-badge.neg{background:var(--neg-soft); color:var(--neg)}
+  .quote-body{display:flex; flex-direction:column; gap:4px; min-width:0}
+  .quote-text{font-size:15px; line-height:1.45}
+  .quote-meta{font-size:12.5px; color:var(--ink-faint); font-family:'IBM Plex Mono'}
+  .quote-meta b{color:var(--ink-muted); font-family:'Public Sans'; font-weight:600}
+
+  .method{background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; display:flex; flex-direction:column; gap:10px; font-size:13.5px; color:var(--ink-muted); line-height:1.6}
+  .method dl{display:grid; grid-template-columns:auto 1fr; gap:4px 14px; margin:0}
+  .method dt{font-weight:700; color:var(--ink)}
+  .method dd{margin:0}
+  .caveat{font-size:12.5px; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:10px}
+
+  footer{text-align:center; font-size:12px; color:var(--ink-faint); padding-top:4px}
+</style>
+
+<div class="page">
+
+  <header>
+    <div class="eyebrow">Diagnóstico de sentimento · @btgpactual</div>
+    <h1 class="disp">Termômetro da Faria Lima</h1>
+    <p class="lede">31 comentários de 2 posts recentes do BTG Pactual foram lidos, classificados e ponderados pelas curtidas de cada um. Comentários brutos em <code>comentarios.md</code>, classificação por categoria em <code>classificacao.md</code>.</p>
+  </header>
+
+  <div class="posts-row">
+    <div class="post-card">
+      <div class="post-thumb" aria-hidden="true"></div>
+      <div class="post-meta">
+        <div class="post-handle">Curso de Previdência</div>
+        <div class="post-caption">185 comentários · 265 curtidas</div>
+        <div class="post-date">2 de setembro</div>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-thumb" aria-hidden="true"></div>
+      <div class="post-meta">
+        <div class="post-handle">Corte da Taxa Selic</div>
+        <div class="post-caption">16 comentários · 2.515 curtidas</div>
+        <div class="post-date">17 de setembro</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-label">Índice de sentimento sobre a marca</div>
+      <div class="hero-verdict">hostil</div>
+    </div>
+    <div class="hero-number-row">
+      <div class="hero-number mono">26</div>
+      <div class="hero-number-suffix">/ 100</div>
+    </div>
+    <div>
+      <div class="gauge">
+        <div class="gauge-marker" style="left:26%" data-label="26"></div>
+      </div>
+      <div class="gauge-ticks">
+        <span>0 · hostil</span>
+        <span>50 · neutro</span>
+        <span>100 · aprovação total</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Quem mais curte, mais critica</h2>
+      <p class="section-sub">O engajamento não suaviza a crítica aqui — ele a amplifica.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-card">
+        <div class="compare-title">Por número de comentários</div>
+        <div class="compare-num" style="color:var(--neg)">33<span style="font-size:18px;color:var(--ink-faint)">/100</span></div>
+        <div class="divbar">
+          <div class="neg" style="width:67%" title="67% negativos"></div>
+          <div class="pos" style="width:33%" title="27% positivos, 7% neutros"></div>
+        </div>
+        <div class="divbar-legend"><span class="neg-lbl">67% negativos</span><span class="pos-lbl">27% positivos</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-title">Por engajamento (curtidas)</div>
+        <div class="compare-num" style="color:var(--neg)">26<span style="font-size:18px;color:var(--ink-faint)">/100</span></div>
+        <div class="divbar">
+          <div class="neg" style="width:74%" title="equivalente a 74% no polo negativo"></div>
+          <div class="pos" style="width:26%" title="equivalente a 26% no polo positivo"></div>
+        </div>
+        <div class="divbar-legend"><span class="neg-lbl">74 — os mais curtidos pioram</span><span class="pos-lbl">26</span></div>
+      </div>
+    </div>
+    <div class="insight-box">
+      <b>O comentário mais curtido da amostra inteira (14 curtidas) é uma cobrança, não um elogio:</b> "Cadê a retratação do caso do @brunokarttos?". Os elogios existem ("Show ✨", "🔥"), mas ficam com 0–1 curtida — quem concorda com a crítica se manifesta mais que quem elogia.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Uma controvérsia dominou um post que nem era sobre ela</h2>
+      <p class="section-sub">O post era sobre um curso gratuito de Previdência Privada. Boa parte dos comentários não fala do curso — fala de um caso não resolvido publicamente.</p>
+    </div>
+    <div class="contro-box">
+      <div>
+        <div class="contro-stat">12<span style="font-size:22px;color:var(--ink-faint)">/31</span></div>
+        <div class="contro-stat-label">DOS COMENTÁRIOS</div>
+      </div>
+      <div class="contro-text">
+        <b>39% de toda a amostra</b> cobra publicamente uma "retratação" ligada ao caso <b>@brunokarttos</b> — direto no post do curso, sem relação com o conteúdo anunciado. <b>100% desses 12 comentários são negativos.</b> Uma pessoa (@layrapassos) postou a mesma cobrança 3 vezes.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Do que os 31 comentários falam</h2>
+    </div>
+    <div class="theme-bar">
+      <div class="seg c1" style="width:39%">39%</div>
+      <div class="seg c2" style="width:35%">35%</div>
+      <div class="seg c3" style="width:26%">26%</div>
+    </div>
+    <div class="theme-legend">
+      <span><span class="dot c1"></span>12 — cobrança de retratação, 100% negativos</span>
+      <span><span class="dot c2"></span>11 — opinião sobre o corte de juros, maioria cética</span>
+      <span><span class="dot c3"></span>8 — elogio genérico ou fora do índice</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Vozes da audiência</h2>
+      <p class="section-sub">Os comentários que mais pesaram no índice, pra cima e pra baixo.</p>
+    </div>
+    <div class="quotes">
+      <div class="quote-card neg">
+        <div class="score-badge neg mono">−2</div>
+        <div class="quote-body">
+          <div class="quote-text">"Cadê a retratação do caso do @brunokarttos?"</div>
+          <div class="quote-meta"><b>@luizroyall</b> · 14 curtidas (maior engajamento da amostra)</div>
+        </div>
+      </div>
+      <div class="quote-card neg">
+        <div class="score-badge neg mono">−2</div>
+        <div class="quote-body">
+          <div class="quote-text">"O BC independente está um desastre. [...] A Faria Lima rouba os cofres públicos sustentada por uma fantasia de déficit."</div>
+          <div class="quote-meta"><b>@1_pedro_2.16</b> · 3 curtidas — o texto mais longo e duro da amostra</div>
+        </div>
+      </div>
+      <div class="quote-card neg">
+        <div class="score-badge neg mono">−2</div>
+        <div class="quote-body">
+          <div class="quote-text">"Vocês não tem respeito e responsabilidade alguma com os clientes"</div>
+          <div class="quote-meta"><b>@viviverner</b> · 7 curtidas</div>
+        </div>
+      </div>
+      <div class="quote-card pos">
+        <div class="score-badge pos mono">+2</div>
+        <div class="quote-body">
+          <div class="quote-text">"Super didático! Amo!✨"</div>
+          <div class="quote-meta"><b>@iodicebrasil</b> · sobre o curso de Previdência — elogio genuíno, mas sem curtidas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Metodologia</h2>
+    </div>
+    <div class="method">
+      <dl>
+        <dt>Amostra</dt><dd>31 comentários (top-level + algumas respostas) de 2 posts do @btgpactual, coletados em 17–18/09/2026 — ver <code>comentarios.md</code></dd>
+        <dt>Por que 2 posts</dt><dd>Nenhum post recente do BTG reuniu sozinho mais de 30 comentários de topo. Juntamos o post de maior volume (Previdência Privada, 15 comentários de topo) com o post mais recente de forte engajamento (Selic, 15 comentários de topo + 1 resposta).</dd>
+        <dt>Régua do índice</dt><dd>Tema (entra ou não no índice), nota de −2 a +2, peso = 1 + ln(1 + curtidas)</dd>
+        <dt>Classificação por categoria</dt><dd>QUERO / PREÇO / DÚVIDA / ELOGIO / CRÍTICA / RUÍDO / NÃO CLASSIFICADO — ver <code>classificacao.md</code></dd>
+      </dl>
+      <div class="caveat">Amostra pequena e concentrada numa controvérsia específica (@brunokarttos) que não foi investigada aqui — não sabemos o que motivou o pedido de retratação, só que ele domina a conversa. Resultado não deve ser lido como "o BTG é mal visto em geral", e sim como "estes 31 comentários, nestes 2 posts, neste momento, pesam para o lado crítico".</div>
+    </div>
+  </section>
+
+  <footer>Feito a partir de posts públicos de @btgpactual no Instagram</footer>
+
+</div>
