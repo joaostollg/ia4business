@@ -1,6 +1,6 @@
 # Prompt V2
 
-> Versão reescrita do pedido em [prompt-ma-telecom-v1.md](prompt-ma-telecom-v1.md), seguindo o framework do workshop Produtech (Passo 3 · briefing completo: TAREFA / FORMATO / AMOSTRA / LIMITE). Gera a Seção 9 (ou revisão da Seção 7) em [problema-radar-provedores-analise.md](problema-radar-provedores-analise.md).
+> Versão reescrita do pedido em [prompt-ma-telecom-v1.md](prompt-ma-telecom-v1.md), seguindo o framework do workshop Produtech (Passo 3 · briefing completo: TAREFA / FORMATO / AMOSTRA / LIMITE). Gera a Seção 9 (ou revisão da Seção 7) em [problema.md](problema.md).
 
 **Data:** 24/08/2026
 

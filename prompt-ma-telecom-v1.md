@@ -1,6 +1,6 @@
 # Histórico de Prompts
 
-> Registro dos pedidos que geraram as seções de M&A em [problema-radar-provedores-analise.md](problema-radar-provedores-analise.md) — parte do exercício do workshop Produtech (Passo 3 · V1 → V2, o briefing completo).
+> Registro dos pedidos que geraram as seções de M&A em [problema.md](problema.md) — parte do exercício do workshop Produtech (Passo 3 · V1 → V2, o briefing completo).
 
 ---
 

@@ -4,6 +4,42 @@
 
 ---
 
+## Métrica
+
+> Como eu sei se isto está funcionando. Cada alvo tem **número e prazo** — alvo
+> sem data não é alvo, é intenção. Definidos em 21/09/2026.
+
+| Métrica | Alvo | Como confiro |
+|---|---|---|
+| **Primeiro contrato recorrente assinado** | **1 contrato até 31/12/2026** | Contrato assinado **e** primeiro retainer compensado em conta. Registrado em `dados/clientes.md` com a data. Sem dinheiro na conta não conta como fechado. |
+| **Baseline do funil manual de hoje** | **2 sócios entrevistados e números registrados até 31/10/2026** | A seção 2.4 deste documento deixa de dizer "a validar" e passa a ter dois números: horas/mês gastas em prospecção e taxa abordagem→reunião do processo atual. Enquanto estiver "a validar", está falhando. |
+| **Taxa abordagem → reunião** | **15% até 31/03/2027** | Reuniões agendadas ÷ ISPs abordados no trimestre, contados no pipeline. Só conta reunião que aconteceu, não convite aceito. |
+| **Entrega registrada por cliente ativo** | **100% dos clientes ativos com ao menos 1 entrega registrada por mês, primeira apuração em 25/01/2027** | Checagem automática da Regra 3 de [regras.md](regras.md), todo dia 25, contra `dados/clientes.md`. O resultado de cada checagem fica em [automacoes.md](automacoes.md). |
+| **Churn de recorrência** | **0 cancelamento nos primeiros 6 meses de cada contrato, apurado em 30/06/2027** | Contratos ativos ÷ contratos assinados, por safra de entrada. Cancelamento e não renovação contam igual. |
+| **Precisão do Radar** | **≥ 70% de acerto numa amostra de 50 ISPs pontuados, até 28/02/2027** | Um sócio revisa às cegas os 50 e diz quais são boas candidatas. Compara com a nota do Radar. Acerto = candidata de nota alta que o sócio confirma. |
+| **Tempo até a conversa de M&A** | **1 cliente recorrente evoluindo para conversa de M&A até 31/12/2027** | Registro datado da primeira reunião em que o dono do ISP trata de venda/sucessão por iniciativa própria. É o objetivo final do modelo (`contexto/negocio.md`). |
+
+### O que estes alvos são, honestamente
+
+**São hipóteses com data, não projeções apoiadas em histórico.** A boutique está
+em estágio de validação e não tem cliente pagante fechado, então nenhum desses
+números vem de série histórica — vêm do que precisa ser verdade para o modelo de
+negócio se sustentar. O valor deles não está na precisão: está em serem
+**falsificáveis**. Em 31/10/2026 ou a seção 2.4 tem dois números, ou não tem. Em
+31/12/2026 ou existe um contrato assinado com retainer compensado, ou não existe.
+
+Duas ressalvas que continuam valendo, já registradas nas seções 6.3 e 4.4:
+
+1. **A taxa de 15% (abordagem → reunião) é a mais frágil da tabela** — é chute,
+   porque não existe baseline do processo manual. Por isso a linha do baseline
+   tem prazo mais curto (31/10/2026) que a da taxa (31/03/2027): uma precisa
+   existir antes de a outra significar alguma coisa.
+2. **Nenhuma métrica de funil prova que o Radar ajudou** sem saber como era o
+   funil antes dele. A linha do baseline existe justamente para fechar essa
+   lacuna.
+
+---
+
 ## 1. Diagnóstico geral (o que um investidor vê primeiro)
 
 **Pontos fortes do documento atual:**

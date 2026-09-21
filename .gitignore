@@ -4,3 +4,6 @@ Hire_Capital_Dossie.pdf
 # Configuração local do Claude Code (versiona as skills do projeto, ignora o resto)
 .claude/*
 !.claude/skills/
+
+# Lixo do macOS (nao tem conteudo nosso)
+.DS_Store

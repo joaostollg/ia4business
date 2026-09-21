@@ -6,6 +6,27 @@
 > Se não disparar (o que fica registrado quando está tudo bem). O log de execução
 > de cada regra fica em [automacoes.md](automacoes.md).
 
+**O negócio por trás destas regras:** boutique de assessoria a provedores de
+internet (ISPs) regionais do interior de SP, ligada ao Grupo Sun — vende
+serviços recorrentes (contábil, jurídico, marketing) como porta de entrada e
+assessoria de M&A como objetivo final da relação. O cliente pagante é o **dono
+do ISP**, lado vendedor. Contexto completo em
+[contexto/negocio.md](contexto/negocio.md) e
+[contexto/cliente.md](contexto/cliente.md).
+
+| Regra | Sobre o quê | Fonte |
+|---|---|---|
+| **0** | Trava geral — fonte indisponível | as duas abaixo |
+| **1** | Meta de vendas do mês | FakeERP (**base de treino**) |
+| **2** | Queda de receita mês a mês | FakeERP (**base de treino**) |
+| **3** | Cliente recorrente sem entrega no mês | operação real da boutique |
+
+As Regras 1 e 2 rodam sobre o FakeERP, o ERP de treino das Aulas 10–12 — é
+prática de "consumir uma API e decidir em cima do dado", não a operação da
+boutique. Quando houver um ERP/CRM de verdade, a mecânica das duas se aplica
+igual, trocando "pedido pago" por "retainer recebido". A **Regra 3** é a que
+mede o negócio real.
+
 ## Regra 0 — Fonte indisponível (trava geral, vale para todas as regras)
 
 > Esta regra vem **antes** de todas as outras. Enquanto ela não passar, nenhuma
@@ -41,6 +62,39 @@
 - **Se não disparar** (fonte respondeu e o arquivo existe): não registra nada
   por si só; segue normalmente para a Regra 1 e a Regra 2, que fazem o próprio
   registro.
+
+### Contagem de linhas — obrigatória em toda leitura de arquivo
+
+Sempre que uma regra ler `dados/amostra.csv` (ou qualquer outro arquivo de
+dado), a resposta **tem que dizer quantas linhas foram lidas, quantas foram
+ignoradas e por quê** — mesmo quando nenhuma foi ignorada ("li 12 linhas,
+ignorei 0"). Linha ignorada sem aviso é número errado com cara de número certo.
+
+Conta como linha a ignorar, e cada uma precisa ser nomeada no aviso:
+
+| O que apareceu | O que fazer |
+|---|---|
+| Linha vazia ou incompleta | Não conta como pedido. Avisar qual. |
+| Valor negativo em `value`, `discount` ou `total` | Não somar. Avisar qual pedido e qual campo. |
+| Data fora do formato `aaaa-mm-ddThh:mm:ss` | Não chutar o mês. Avisar qual pedido e qual formato veio. |
+| `status` diferente de `PAID`/`CANCELLED`/`PENDING` | Não classificar por conta própria. Avisar. |
+
+**Nunca criar período que não existe.** Se a data de um pedido não puder ser
+lida, ele fica de fora da contagem e é reportado — jamais vira um mês novo na
+tabela. Um período com nome estranho no relatório é sinal de data mal lida, não
+de mês novo no negócio.
+
+**Linha que some não é linha ignorada — e é mais perigosa.** Contar as linhas
+que o leitor entregou não basta: uma linha em branco no meio do arquivo é
+descartada pelo próprio leitor de CSV antes de a contagem acontecer, então ela
+não aparece nem como "ignorada". Por isso, toda leitura precisa **conferir o
+número de linhas físicas do arquivo contra o número de registros processados** e
+avisar se não baterem. Confirmar também que os `order_id` não têm buraco na
+sequência. Descoberto no teste de 21/09/2026, ver [testes.md](testes.md).
+
+**Se mais de 20% das linhas forem ignoradas**, tratar como fonte corrompida:
+aplicar a Regra 0 ("fonte indisponível") e parar, em vez de entregar um
+relatório construído sobre o que sobrou.
 
 ### Atenção — o que esta regra NÃO cobre
 
@@ -119,3 +173,71 @@ o que evitamos foi o alarme falso dos primeiros dias do mês.
 |---|---|---|---|---|---|
 | Março/2026 | R$ 800,00 (só o pedido 1009 — 1008 pendente e 1010 cancelado ficam de fora) | Fevereiro/2026 | R$ 3.149,90 | **-74,6%** | **Dispara** → alarme no Notion |
 | Fevereiro/2026 | R$ 3.149,90 | Janeiro/2026 | R$ 1.430,00 | +120,3% (alta, não queda) | **Fica calada** → registra em `automacoes.md` |
+
+## Regra 3 — Cliente recorrente sem entrega registrada no mês
+
+> As Regras 1 e 2 rodam sobre o FakeERP, que é **base de treino** (pedidos de
+> uma loja), não sobre a operação da boutique. Esta regra existe porque o risco
+> que realmente derruba este negócio não é receita de pedido: é cliente que
+> paga o retainer e não vê entrega. `contexto/cliente.md` registra isso como o
+> motivo nº 1 de churn — "falta de resultado/entrega percebida" — e
+> `contexto/negocio.md` diz que a receita previsível vem justamente desse
+> retainer mensal.
+
+- **Nome:** Cliente recorrente sem entrega registrada no mês
+- **Gatilho:** Tempo. Todo dia **25** de cada mês, às 8h. O dia 25 é de
+  propósito: sobram cinco dias úteis para produzir e mostrar alguma entrega
+  antes de o mês fechar. Alarme no dia 30 só serviria para constatar o dano.
+- **Fonte:** `dados/clientes.md` — um registro por cliente com: nome do ISP,
+  serviços recorrentes contratados, valor do retainer e **data da última
+  entrega registrada**.
+  ⚠️ **Esse arquivo ainda não existe.** A boutique está em estágio de
+  ideia/validação, sem cliente pagante fechado (`contexto/negocio.md`). Até o
+  primeiro contrato assinado, esta regra cai na **Regra 0** e responde "fonte
+  indisponível" — em voz alta, registrada no `automacoes.md`. Ela não finge
+  que está tudo bem, e não fica calada.
+- **Condição:** Cliente com contrato recorrente ativo e **nenhuma entrega
+  registrada nos últimos 30 dias** contados a partir da data da checagem.
+- **Ação:** Escrever um alarme na página **Alertas** do Notion com: nome do
+  cliente, serviços contratados, quantos dias desde a última entrega e qual foi
+  a última entrega registrada. Título: "🔻 Cliente sem entrega há N dias —
+  `nome do ISP`".
+- **Quem recebe:** João, na página Alertas do Notion.
+- **Se não disparar** (todo cliente ativo teve entrega nos últimos 30 dias):
+  não escreve nada no Notion. Grava uma linha em `automacoes.md` com a data da
+  checagem, quantos clientes foram verificados e "todos com entrega no período".
+
+### Por que esta regra e não outra
+
+O cliente da boutique é um fundador mais velho que decide sozinho, cuja
+concorrência **é a inércia** — ele não está comparando a boutique com outra
+assessoria, está comparando com não fazer nada (`contexto/cliente.md`). Um mês
+sem entrega visível não gera reclamação: gera silêncio, e o silêncio vira não
+renovação. É o mesmo padrão dos três cenários de falha testados em
+[testes.md](testes.md) — o problema não avisa, ele só aparece depois.
+
+Por isso a regra mede **entrega registrada**, não satisfação declarada. Satisfação
+o cliente não reclama até ir embora; entrega é verificável hoje, pela boutique,
+sem depender de o dono do ISP falar alguma coisa.
+
+
+## Prova de vida — silêncio não é sinal de OK
+
+> Regra sobre as regras. Descoberta no teste do cenário 3 em 21/09/2026, quando
+> se constatou que a rotina da Regra 1 não deixou rastro nos dias 20 e 21/09,
+> embora devesse ter rodado nos dois. Ninguém percebeu, porque uma automação que
+> não roda produz exatamente o mesmo silêncio de uma automação que rodou e não
+> achou problema.
+
+- **Toda execução deixa linha**, dispare ou não. Isso já está em cada regra, mas
+  aqui vira obrigação verificável: `automacoes.md` é o comprovante de vida da
+  automação, não o arquivo de alarmes.
+- **Ausência de linha é falha**, não é "estava tudo bem". Se uma regra deveria
+  ter rodado num dia e não existe linha daquele dia, o estado correto a assumir
+  é **"não sei"** — nunca "sem problema". Registrar como falha de execução.
+- **Ao checar qualquer regra sob pedido**, conferir antes se as execuções
+  automáticas anteriores deixaram rastro. Se faltar dia, dizer isso junto com o
+  resultado, mesmo que o resultado do dia esteja bom.
+- **Regra sem agendamento não é regra automática** — é documentação de intenção.
+  Enquanto uma regra depender de alguém lembrar de pedir, o `automacoes.md`
+  precisa dizer isso com todas as letras, na linha dela.
