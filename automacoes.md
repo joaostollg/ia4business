@@ -8,8 +8,9 @@
 
 ## Regras ligadas
 
-- Arquivo das regras: `regras.md` (2 regras: *Meta de vendas do mês abaixo do
-  esperado* e *Queda de receita paga em relação ao mês anterior*)
+- Arquivo das regras: `regras.md` (3 regras: *Fonte indisponível* — trava geral
+  que roda antes das outras duas —, *Meta de vendas do mês abaixo do esperado* e
+  *Queda de receita paga em relação ao mês anterior*)
 - Como roda: rotina agendada na nuvem (`claude.ai/code/routines`), diariamente
   às 8h (horário de Brasília), dias 20–31 — cobre a Regra 1. A Regra 2 (checagem
   no dia 1) ainda roda à mão, sob pedido; falta um segundo agendamento para o
@@ -26,6 +27,8 @@
 | 14/09/2026 | Meta de vendas do mês abaixo do esperado | Setembro/2026 (mês atual, dado ao vivo) | R$ 0,00 | Sim (simulação) | Mês ainda sem pedido lançado. Gatilho real só age a partir do dia 20 — hoje é dia 14, então isto não é um disparo de produção, é a condição testada com o dado real de hoje. Registrado no Notion como "(simulação)" |
 | 14/09/2026 | Queda de receita paga em relação ao mês anterior | Março/2026 vs Fevereiro/2026 | R$ 800,00 vs R$ 3.149,90 (-74,6%) | **Sim** | Alarme escrito na página [Alertas](https://app.notion.com/p/3db58fad60ea81b2b581c8729ab12725) do Notion |
 | 14/09/2026 | Queda de receita paga em relação ao mês anterior | Fevereiro/2026 vs Janeiro/2026 | R$ 3.149,90 vs R$ 1.430,00 (+120,3%) | Não | Sem queda relevante — nada escrito no Notion, só este registro |
+| 21/09/2026 08:57 | Meta de vendas do mês abaixo do esperado | Setembro/2026 (mês atual) | — não apurada | **Não checou** | Primeira execução com o gatilho real valendo (dia 21 ≥ 20). FakeERP fora do ar: `POST /auth/login` e `GET /v3/api-docs` devolveram HTTP 502 (Cloudflare, origem caída) em 3 tentativas. Sem token não há como chamar `GET /report/2026/9`. Nada escrito no Notion — a condição não chegou a ser avaliada. **Refazer quando a API voltar.** |
+| 21/09/2026 09:00 | Meta de vendas do mês abaixo do esperado | Setembro/2026 (mês atual, dado ao vivo) | R$ 0,00 | **Sim** | API voltou (queda durou ~3 min). `GET /report/2026/9` devolveu `count: 0`, nenhum pedido no mês → receita paga R$ 0,00 < R$ 3.000. Primeira execução com o gatilho real valendo (dia 21). Alarme escrito na página [Alertas](https://app.notion.com/p/3db58fad60ea81b2b581c8729ab12725) do Notion, **com ressalva explícita de base vazia**: setembro não é um dos meses com dado na base de treino (só jan/fev/mar/jul de 2026), então o R$ 0,00 é ausência de dado, não queda de vendas real. |
 
 ## Painel
 
@@ -51,5 +54,16 @@
 
 - Agendar a Regra 2 (dia 1 de cada mês, 8h) como segunda rotina — hoje só a
   Regra 1 está agendada.
-- Reconferir setembro/2026 a partir do dia 20, quando o gatilho da Regra 1
-  realmente entra em ação.
+- **Ponto cego da Regra 1 — mês vazio vs. mês ruim (aberto em 21/09/2026).** A
+  regra só pergunta "receita paga < R$ 3.000?" e por isso não distingue duas
+  situações muito diferentes que dão o mesmo resultado: (a) o mês existe, o ERP
+  está sendo alimentado e mesmo assim entrou pouco dinheiro — alarme legítimo;
+  (b) o mês não tem nenhum pedido lançado — aí o R$ 0,00 é notícia sobre a base,
+  não sobre as vendas. Foi o que aconteceu com setembro/2026 em 21/09.
+  *Correção proposta (não aplicada):* se o relatório vier com `count == 0`, a
+  regra não escreve alarme de vendas; registra "mês sem pedido lançado" e, se
+  for o caso, avisa que a fonte pode estar parada. Dois problemas diferentes,
+  dois avisos diferentes. **Decisão do João em 21/09: anotar agora, mexer na
+  regra depois.**
+- Reconferir setembro/2026 quando houver pedido lançado no mês — a checagem de
+  21/09/2026 rodou com a base zerada.

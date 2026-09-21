@@ -6,6 +6,51 @@
 > Se não disparar (o que fica registrado quando está tudo bem). O log de execução
 > de cada regra fica em [automacoes.md](automacoes.md).
 
+## Regra 0 — Fonte indisponível (trava geral, vale para todas as regras)
+
+> Esta regra vem **antes** de todas as outras. Enquanto ela não passar, nenhuma
+> outra regra roda. Existe porque uma análise feita sobre dado que não chegou é
+> pior que análise nenhuma: ela parece certa.
+
+- **Nome:** Fonte indisponível
+- **Gatilho:** Sempre, como primeiro passo de qualquer execução — automática ou
+  sob pedido — antes de avaliar a condição de qualquer outra regra.
+- **Fonte:** As duas fontes do projeto:
+  1. **FakeERP** — `POST /auth/login` e `GET /report/{ano}/{mês}`, conforme
+     [fake-erp.md](fake-erp.md).
+  2. **Arquivo local** — `dados/amostra.csv`.
+- **Condição** (dispara se **qualquer uma** for verdadeira):
+  - O FakeERP não responde: erro de rede, tempo esgotado, ou HTTP que não seja
+    200 — inclusive **502** (servidor fora do ar), 500, 503, ou 401/403 que não
+    se resolva com um novo login.
+  - O arquivo `dados/amostra.csv` **não existe** na pasta `dados/`, está vazio
+    ou não pode ser lido.
+- **Ação:** Responder exatamente **"fonte indisponível"** e **parar a análise ali**.
+  Não seguir para a condição de nenhuma outra regra, não escrever alarme no
+  Notion, não gerar nem regenerar painel.
+  **Proibido em qualquer hipótese:** estimar, deduzir, arredondar, reaproveitar
+  número de execução anterior, usar valor de arquivo `_OLD`, completar com
+  memória do que "costuma ser" ou apresentar qualquer número como se tivesse
+  vindo da fonte. **Não inventar absolutamente nada.** Dado que não chegou não
+  vira número — vira "fonte indisponível".
+- **Quem recebe:** João, na resposta da própria execução. Além disso, grava uma
+  linha em `automacoes.md` com data/hora, qual fonte falhou e o erro observado
+  (ex.: "HTTP 502 no login"), para ficar a prova de que a regra rodou e parou.
+  Nada é escrito no Notion — página de alarme é para problema de negócio, e
+  fonte fora do ar é problema de infraestrutura.
+- **Se não disparar** (fonte respondeu e o arquivo existe): não registra nada
+  por si só; segue normalmente para a Regra 1 e a Regra 2, que fazem o próprio
+  registro.
+
+### Atenção — o que esta regra NÃO cobre
+
+Fonte **indisponível** é diferente de fonte **vazia**. Se o FakeERP responder
+HTTP 200 com `count: 0`, a fonte está disponível e funcionando: ela respondeu, e
+a resposta é "não há pedido neste mês". A Regra 0 **não** dispara nesse caso — a
+execução segue para a Regra 1, que hoje trata esse R$ 0,00 como receita abaixo
+da meta. Esse é o ponto cego registrado como pendência em
+[automacoes.md](automacoes.md) e continua em aberto.
+
 ## Regra 1 — Meta de vendas do mês abaixo do esperado
 
 - **Nome:** Meta de vendas do mês abaixo do esperado
