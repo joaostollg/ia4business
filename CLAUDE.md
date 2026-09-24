@@ -57,6 +57,9 @@ Nunca fazer:
 - `testes.md` — os 3 cenários de falha (fonte fora do ar, dado inesperado,
   condição que nunca dispara) rodados de propósito em 21/09/2026, com o que
   quebrou e a frase que consertou cada um.
+- `escala.md` — portão "pronto para escalar?" de 24/09/2026 (Aula 15): as 5
+  perguntas com evidência, decisão **não abre**, item a virar "sim" primeiro =
+  pergunta 5 (cliente ouvido), prazo 01/10/2026.
 - `problema.md` — diagnóstico do Radar com lente de
   investidor; reforça/critica a seção de "Problema" do spec. Contém a seção
   `## Métrica` (alvo com número e prazo).

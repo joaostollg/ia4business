@@ -26,6 +26,7 @@ Na ordem em que alguém que nunca viu este repositório deveria ler:
 | 5 | [testes.md](testes.md) | Os 3 cenários de falha rodados de propósito em 21/09/2026, com o que quebrou e o que foi consertado. |
 | 6 | [automacoes.md](automacoes.md) | O log: prova de que cada regra rodou — inclusive quando ficou calada porque estava tudo bem. |
 | 7 | [painel.html](painel.html) | Dashboard de arquivo único com os 3 números do negócio de treino. Abre com dois cliques, offline. |
+| 8 | [escala.md](escala.md) | O portão de 24/09/2026: as 5 perguntas de "pronto para escalar?" respondidas com evidência, e a decisão (não abre) com o item a consertar primeiro. |
 
 ## Todos os arquivos
 
@@ -37,6 +38,7 @@ Na ordem em que alguém que nunca viu este repositório deveria ler:
 | [regras.md](regras.md) | As regras de decisão automática. Regra 0 (fonte indisponível, trava geral), Regra 1 (meta de vendas do mês), Regra 2 (queda de receita mês a mês), Regra 3 (cliente recorrente sem entrega) e a seção "Prova de vida". |
 | [testes.md](testes.md) | Os três cenários que derrubam qualquer automação — fonte fora do ar, dado inesperado e condição que nunca dispara — testados de verdade, com antes e depois. |
 | [automacoes.md](automacoes.md) | Log de execução das regras e de como o painel é atualizado. Registra também o que ficou pendente. |
+| [escala.md](escala.md) | Avaliação "pronto para escalar?" (Aula 15): cinco perguntas do portão com evidência por arquivo, a decisão de não abrir e o prazo do item que vira "sim" primeiro (cliente ouvido, até 01/10/2026). |
 | [problema.md](problema.md) | Diagnóstico do Radar de Provedores com lente de investidor: problema reescrito e hierarquizado, mercado, modelo de operação, métricas e dois panoramas de M&A em telecom. É o documento mais longo do repositório. |
 | [painel.html](painel.html) | Painel de arquivo único gerado a partir de `dados/fonte.md` + `dados/amostra.csv`. Dados embutidos: abre sem internet e sem servidor. |
 | [fake-erp.md](fake-erp.md) | O manual da porta do FakeERP: como autenticar, qual endpoint puxa o relatório do mês, quais meses têm dado e a pegadinha de somar pedidos cancelados como se fossem venda. |
