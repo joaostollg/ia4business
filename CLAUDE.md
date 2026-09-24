@@ -60,6 +60,11 @@ Nunca fazer:
 - `escala.md` — portão "pronto para escalar?" de 24/09/2026 (Aula 15): as 5
   perguntas com evidência, decisão **não abre**, item a virar "sim" primeiro =
   pergunta 5 (cliente ouvido), prazo 01/10/2026.
+- `plano-escuta.md` — plano para virar "sim" a pergunta 5: 2 sócios + 1 dono
+  de ISP (via apresentação do Grupo Sun), hipóteses a testar, roteiros e
+  cronograma até 01/10/2026.
+- `escuta/` — notas das conversas com nomes reais. **Fora do git**
+  (`.gitignore`), porque o repositório no GitHub é público. Nunca commitar.
 - `problema.md` — diagnóstico do Radar com lente de
   investidor; reforça/critica a seção de "Problema" do spec. Contém a seção
   `## Métrica` (alvo com número e prazo).
