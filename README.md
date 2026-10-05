@@ -66,6 +66,12 @@ Na ordem em que alguém que nunca viu este repositório deveria ler:
 | [dados/fonte.md](dados/fonte.md) | A fonte canônica: onde o dado mora e a regra de cálculo dos 3 números (pedidos pagos, receita paga, ticket médio). Se uma conta divergir daqui, a conta está errada. |
 | `dados/amostra.csv` | O dado bruto — 12 pedidos exportados do FakeERP. É o arquivo que alimenta o `painel.html` e o que foi quebrado de propósito nos testes. |
 
+### `agente/` — prompt de agente (exercício Tech Lab)
+
+| Arquivo | O que é e para que serve |
+|---|---|
+| [agente/prompt.md](agente/prompt.md) | Prompt do agente de dúvidas da Tech Lab (empresa de cursos, exercício — não é a boutique): objetivos, personalidade, linguajar, ferramentas, o que pode e o que não pode. Falta preencher o canal de suporte. |
+
 ### `radar/` — coleta e classificação (Aula 13)
 
 | Arquivo | O que é e para que serve |
